@@ -1,0 +1,41 @@
+{% extends "videojuego/base.html" %} <wbr /> 
+
+{% block content %}
+    <table class="table table-borderless">
+        <thead class="border-bottom font-weight-bold">
+            <tr>
+                <td>Titulo</td>
+                <td>Codigo</td>
+                <td>Plataforma</td>
+                <td>Calificacion</td>
+                <td>
+                    <a href="{% url 'videojuego_insert' %}" class="btn btn-outline-success">
+                        <i class="fas fa-plus"></i> Agregar nueva
+                    </a>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for videojuego in videojuego_list %}
+                <tr>
+                    <td>{{videojuego.titulo}}</td>
+                    <td>{{videojuego.codigo}}</td>
+                    <td>{{videojuego.calificacion}}</td>
+                    <td>{{videojuego.plataforma}}</td>
+                    <td>
+                        <a href="{% url 'videojuego_update' videojuego.id %}" class="btn text-secondary px-0">
+                            <i class="far fa-edit fa-lg"></i>
+                        </a>
+                        <form action="{% url 'videojuego_delete' videojuego.id %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn">
+                                <i class="far fa-trash-alt fa-lg text-danger float-right"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock content %}

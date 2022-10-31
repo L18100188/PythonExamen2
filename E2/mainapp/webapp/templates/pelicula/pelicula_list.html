@@ -1,0 +1,41 @@
+{% extends "pelicula/base.html" %} <wbr /> 
+
+{% block content %}
+    <table class="table table-borderless">
+        <thead class="border-bottom font-weight-bold">
+            <tr>
+                <td>Titulo</td>
+                <td>Codigo</td>
+                <td>Genero</td>
+                <td>Clasificacion</td>
+                <td>
+                    <a href="{% url 'pelicula_insert' %}" class="btn btn-outline-success">
+                        <i class="fas fa-plus"></i> Agregar nueva
+                    </a>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pelicula in pelicula_list %}
+                <tr>
+                    <td>{{pelicula.titulo}}</td>
+                    <td>{{pelicula.codigo}}</td>
+                    <td>{{pelicula.genero}}</td>
+                    <td>{{pelicula.clasificacion}}</td>
+                    <td>
+                        <a href="{% url 'pelicula_update' pelicula.id %}" class="btn text-secondary px-0">
+                            <i class="far fa-edit fa-lg"></i>
+                        </a>
+                        <form action="{% url 'pelicula_delete' pelicula.id %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn">
+                                <i class="far fa-trash-alt fa-lg text-danger float-right"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock content %}

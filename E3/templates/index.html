@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='./inicio.css') }}">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+</head>
+<body>
+    <div id="presentacion">
+        <h1>Inicio de la página</h1>
+    </div>
+    <h2>Selecciona una opcion</h2>
+
+    <div id="menu">
+        <a href="{{url_for('mostrarCine')}}" >Cines</a>
+        <a href="{{url_for('mostrarSala')}}" >Salas</a>
+        
+    </div>
+
+    <div id="imagenes">
+        <img src="https://f-droid.org/repo/com.simplemobiletools.musicplayer/en-US/icon_LF9xr3OoLzMxsBz0lKfU3jNXDLtoa567FGhS_jciwTI=.png">
+        <img src="https://www.dadu-estudio.com/wp-content/uploads/Bruno-Mars-Doo-Wops-Hooligans_2010.jpg">
+    </div>
+    
+</body>
+</html>

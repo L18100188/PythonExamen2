@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='./estilo.css') }}">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Canciones</h1>
+    <div>
+        <a href="{{url_for('inicio')}}" id="agregar" >Inicio</a>
+        <a href="{{url_for('agregarCine')}}" id="agregar" >Agregar</a>
+    </div>
+    <div>
+        <table >
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cine</th>
+                    <th>Direccion</th>
+                    <th>Num Salas</th>
+                    <th>Horario</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cine in cines %}
+                <tr>
+                    <td>{{cine.idCine}}</td>
+                    <td>{{cine.nombreCine}}</td>
+                    <td>{{cine.direccion}}</td>
+                    <td>{{cine.numSalas}}</td>
+                    <td>{{cine.horario}}</td>
+                    <td><a href="verCine/{{cine.idCine}}">ver</a></td>
+                    <td><a href="editarCine/{{cine.idCine}}">Editar</a></td>
+                    <td><a href="eliminarCine/{{cine.idCine}}">Eliminar</a></td>
+                </tr>
+                {% endfor %}
+            </tbody> 
+        </table>
+    </div>
+</body>
+</html>

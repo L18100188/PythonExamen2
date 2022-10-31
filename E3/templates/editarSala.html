@@ -11,23 +11,19 @@
     <h1>Agregar</h1>
     <form method="post">
         {{forma.csrf_token}}
-        
         <p id="pAgregar">
-            {{forma.nombreCine.label}}<br/>
-            {{forma.nombreCine(size=30)}}
+            {{forma.capacidad.label}}<br/>
+            {{forma.capacidad(size=30)}}
         </p>
         <p id="pAgregar">
-            {{forma.direccion.label}}<br/>
-            {{forma.direccion(size=30)}}
+            {{forma.ocupado.label}}<br/>
+            {{forma.ocupado(size=30)}}
         </p>
         <p id="pAgregar">
-            {{forma.numSalas.label}}<br/>
-            {{forma.numSalas(size=30)}}
+            {{forma.horaProxFuncion.label}}<br/>
+            {{forma.horaProxFuncion(size=30)}}
         </p>
-        <p id="pAgregar">
-            {{forma.horario.label}}<br/>
-            {{forma.horario(size=30)}}
-        </p>
+
         <p id="pAgregar">
             {{forma.enviar()}}
         </p>

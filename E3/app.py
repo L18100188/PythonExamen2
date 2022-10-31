@@ -1,8 +1,10 @@
-from flask import Flask,render_template, redirect, url_for,jsonify,request
+from flask import Flask,render_template, redirect, url_for,jsonify,request,session
 from database import db
 from flask_migrate import Migrate
 from models import Cine,SalaCine,Pelicula,Producto,Boleto
 from forms import CineForm,SalaCinesForm
+from werkzeug.exceptions import abort
+
 
 #Aplicacion
 app=Flask(__name__)
@@ -35,7 +37,18 @@ def paginaNoEncontrada(error):
 @app.route('/index')
 @app.route('/index.html')
 def inicio():
-    return render_template('index.html')
+    if 'username' in session:
+        return render_template('index.html')
+    else:
+        return redirect(url_for('login'))
+    
+@app.route('/login', methods=["GET","POST"])
+def login():
+    if request.method =="POST":
+        usuario = request.form['username']
+        session['username']=usuario
+        return redirect(url_for('inicio'))
+    return render_template('login.html')
 
 #Entidad Cine-----------------------------------------------------------------
 @app.route('/cine')
@@ -59,6 +72,24 @@ def agregarCine():
             db.session.commit()
             return redirect(url_for('mostrarCine'))
     return render_template('agregarCine.html', forma=cineForm)
+
+@app.route('/editarCine/<int:idCine>',methods=['GET','POST'])
+def editarCine(idCine):
+    cine=Cine.query.get_or_404(idCine)
+    cineForm=CineForm(obj=cine)
+    if request.method == "POST":
+        if cineForm.validate_on_submit():
+            cineForm.populate_obj(cine)
+            db.session.commit()
+            return redirect(url_for('mostrarCine'))
+    return render_template('editarCine.html', forma=cineForm)
+
+@app.route('/eliminarCine/<int:idCine>')
+def eliminarCine(idCine):
+    cine = Cine.query.get_or_404(idCine)
+    db.session.delete(cine)
+    db.session.commit()
+    return redirect(url_for('mostrarCine'))
 
 
 #Entidad Salas de cine -----------------------------------------------------------------------
@@ -96,3 +127,51 @@ def editarSala(idSala):
             db.session.commit()
             return redirect(url_for('mostrarSala'))
     return render_template('editarSala.html', forma=salaForm)
+
+@app.route('/eliminarSala/<int:idSala>')
+def eliminarSala(idSala):
+    sala = SalaCine.query.get_or_404(idSala)
+    db.session.delete(sala)
+    db.session.commit()
+    return redirect(url_for('mostrarSala'))
+
+
+#Agregar boleto --------------------------------------------
+@app.route('/agregarBoleto', methods=["POST"])
+def agregarBoleto():
+    info= request.get_json()
+    funcion=info["funcion"]
+    fechaFuncion= info["fechaFuncion"]
+    precio = info["precio"]
+    boleto=Boleto(funcion,fechaFuncion,precio)
+    db.session.add(boleto)
+    db.session.commit()
+    return f'{funcion} {fechaFuncion} {precio}'
+
+#Agregar producto-------------------------------------------
+@app.route('/agregarProducto', methods=["POST"])
+def agregarProduto():
+    info= request.get_json()
+    nombreProducto=info["nombreProducto"]
+    inventario= info["inventario"]
+    precioVenta = info["precioVenta"]
+    producto=Producto(nombreProducto,inventario,precioVenta)
+    db.session.add(producto)
+    db.session.commit()
+    return f'{nombreProducto} {inventario} {precioVenta}'
+
+
+#Agregar pelicula---------------------------------
+@app.route('/agregarPelicula', methods=["POST"])
+def agregarPelicula():
+    info= request.get_json()
+    nombrePelicula=info["nombrePelicula"]
+    fechaEstreno= info["fechaEstreno"]
+    estudioCinematografico = info["estudioCinematografico"]
+    pelicula=Pelicula(nombrePelicula,fechaEstreno,estudioCinematografico)
+    db.session.add(pelicula)
+    db.session.commit()
+    return f'{nombrePelicula} {fechaEstreno} {estudioCinematografico}'
+
+
+

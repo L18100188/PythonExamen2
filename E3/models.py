@@ -15,11 +15,6 @@ class Cine(db.Model):
                 f'horario:{self.horario}'
         )
 
-    def __init__(self,nombreCine,direccion,numSalas,horario):
-        self.nombreCine=nombreCine
-        self.direccion=direccion
-        self.numSalas=numSalas
-        self.horario=horario
 
 class SalaCine(db.Model):
     idSala=db.Column(db.Integer,primary_key=True)
@@ -47,6 +42,11 @@ class Producto(db.Model):
                 f'precioVenta:{self.precioVenta}'
         )
 
+    def __init__(self,nombreProducto,inventario,precioVenta):
+        self.nombreProducto=nombreProducto
+        self.inventario=inventario
+        self.precioVenta=precioVenta
+
 class Pelicula(db.Model):
     idPelicula=db.Column(db.Integer,primary_key=True)
     nombrePelicula = db.Column(db.String(250))
@@ -60,6 +60,11 @@ class Pelicula(db.Model):
                 f'estudioCinematografico:{self.estudioCinematografico}'
         )
 
+    def __init__(self,nombrePelicula,fechaEstreno,estudioCinematografico):
+        self.nombrePelicula=nombrePelicula
+        self.fechaEstreno=fechaEstreno
+        self.estudioCinematografico=estudioCinematografico
+    
 class Boleto(db.Model):
     idBoleto=db.Column(db.Integer,primary_key=True)
     funcion = db.Column(db.String(250))
@@ -72,3 +77,8 @@ class Boleto(db.Model):
                 f'FechaFuncion:{self.fechaFuncion},'
                 f'precio:{self.precio}'
         )
+    
+    def __init__(self,funcion,fechaFuncion,precio):
+        self.funcion=funcion
+        self.fechaFuncion=fechaFuncion
+        self.precio=precio

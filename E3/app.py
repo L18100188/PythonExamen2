@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,redirect,url_for,jsonify
+from flask import Flask,render_template, redirect, url_for,jsonify,request
 from database import db
 from flask_migrate import Migrate
 from models import Cine,SalaCine,Pelicula,Producto,Boleto
@@ -43,8 +43,8 @@ def mostrarCine():
     cines=Cine.query.all()
     return render_template('cine.html',cines=cines)
 
-@app.route('/verCancion/<int:id>')
-def verDetalleCancion(id):
+@app.route('/verCine/<int:id>')
+def verDetalleCine(id):
     cine=Cine.query.get_or_404(id)
     return render_template('detalleCine.html',cine=cine)
 
@@ -55,8 +55,44 @@ def agregarCine():
     if request.method=="POST":
         if cineForm.validate_on_submit():
             cineForm.populate_obj(cine)
-            #insertar a la base de datos
             db.session.add(cine)
             db.session.commit()
             return redirect(url_for('mostrarCine'))
-    return render_template('agregarCine.html',forma=cineForm)
+    return render_template('agregarCine.html', forma=cineForm)
+
+
+#Entidad Salas de cine -----------------------------------------------------------------------
+@app.route('/Sala')
+def mostrarSala():
+    salasCine= SalaCine.query.all()
+    return render_template('Sala.html', salasCine=salasCine)
+
+@app.route('/verSala/<int:id>')
+def verDetalleSala(id):
+    salaCine=SalaCine.query.get_or_404(id)
+    return render_template('detalleSala.html',salaCine=salaCine)
+
+@app.route('/agregarSala', methods=["GET","POST"])
+def agregarSala():
+    sala= SalaCine()
+    salaForm=SalaCinesForm(obj=sala)
+    if request.method=="POST":
+        if salaForm.validate_on_submit():
+            salaForm.populate_obj(sala)
+            #insertar a la base de datos
+            db.session.add(sala)
+            db.session.commit()
+            return redirect(url_for('mostrarSala'))
+    return render_template('agregarSala.html',forma=salaForm)
+
+
+@app.route('/editarSala/<int:idSala>',methods=['GET','POST'])
+def editarSala(idSala):
+    sala=SalaCine.query.get_or_404(idSala)
+    salaForm=SalaCinesForm(obj=sala)
+    if request.method == "POST":
+        if salaForm.validate_on_submit():
+            salaForm.populate_obj(sala)
+            db.session.commit()
+            return redirect(url_for('mostrarSala'))
+    return render_template('editarSala.html', forma=salaForm)

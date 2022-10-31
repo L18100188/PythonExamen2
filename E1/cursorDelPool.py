@@ -24,7 +24,7 @@ class CursorDelPool:
 if __name__=='__main__':
     with CursorDelPool() as cursor:
          log.debug("dentro del bloque with")
-         #cursor.execute("SELECT * FROM persona")
+         cursor.execute("SELECT * FROM persona")
          #cursor.execute("SELECT * FROM contrato")
-         #cursor.execute("SELECT * FROM persona_contrato")
+         #cursor.execute("SELECT * FROM contrato_persona")
          log.debug(cursor.fetchall())

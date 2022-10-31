@@ -173,5 +173,20 @@ def agregarPelicula():
     db.session.commit()
     return f'{nombrePelicula} {fechaEstreno} {estudioCinematografico}'
 
+#consulta por medio de id
+@app.route('/consultarBoleto/<int:id>')
+def mostrarBoleto(id):
+    boleto=Boleto.query.get(id)
+    resultado={"idBoleto":id,"funcion":boleto.funcion,"fechaFuncion":boleto.fechaFuncion,"precio":boleto.precio}
+    return  jsonify(resultado)
 
+
+
+#Consultar todos los datos
+@app.route('/consultarBoletos/<int:id>')
+def mostrarBoletos(id):
+    boletos=Boleto.query.get(id)
+    for resultado in boletos:
+        resultado={"idBoleto":id,"funcion":boletos.funcion,"fechaFuncion":boletos.fechaFuncion,"precio":boletos.precio}
+    return  jsonify(resultado)
 
